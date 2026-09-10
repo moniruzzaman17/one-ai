@@ -2,6 +2,12 @@
 
 All notable changes follow Semantic Versioning.
 
+## 0.1.2 — 2026-09-11
+
+- Added a stable cPanel Passenger launcher with an atomic `current` release link.
+- Added a safe first-deployment preparation mode while keeping the application root fixed.
+- Hardened private production-data directory permissions and documented the confirmed hosting layout.
+
 ## 0.1.1 — 2026-09-10
 
 - Updated Gemini Live to the current v1beta constrained WebSocket protocol and Gemini 3.1 Flash Live model.

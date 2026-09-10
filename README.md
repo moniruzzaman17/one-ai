@@ -38,6 +38,8 @@ Required cPanel environment values are documented in `.env.example`. Secrets, up
 
 The deployment script never guesses the subdomain document root. If an existing document root must be backed up, set `ONEAI_DOCUMENT_ROOT` to the exact absolute path shown by cPanel before running the script; otherwise leave it unset. The Node.js Application Manager owns the `one.greenminds.info` URL mapping.
 
+For the confirmed cPanel account layout, keep the private source checkout at `/home/greenmin/repositories/one-ai`, the fixed Node.js application root at `/home/greenmin/oneai-app`, and persistent data at `/home/greenmin/oneai-data`. Run `bash scripts/deploy.sh --prepare` for the first release, create the Node.js 22 Production application with startup file `server.js`, then use `bash scripts/deploy.sh` for later releases and automatic health-check rollback.
+
 ## Security notes
 
 - Gemini keys are encrypted with AES-256-GCM and never returned by APIs.
