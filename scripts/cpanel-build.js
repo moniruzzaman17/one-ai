@@ -18,6 +18,10 @@ if (environmentFile) {
 }
 
 process.env.NODE_ENV = "production";
+process.env.NEXT_TELEMETRY_DISABLED = "1";
+if (!/--max-old-space-size(?:=|\s)/.test(process.env.NODE_OPTIONS || "")) {
+  process.env.NODE_OPTIONS = `${process.env.NODE_OPTIONS || ""} --max-old-space-size=768`.trim();
+}
 
 function run(modulePath, arguments_) {
   const result = spawnSync(process.execPath, [modulePath, ...arguments_], {

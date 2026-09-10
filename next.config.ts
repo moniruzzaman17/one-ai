@@ -6,6 +6,8 @@ const nextConfig: NextConfig = {
   serverExternalPackages: ["mammoth", "exceljs", "pdf-parse"],
   experimental: {
     cpus: 1,
+    webpackMemoryOptimizations: true,
+    preloadEntriesOnStart: false,
     serverActions: {
       bodySizeLimit: "21mb",
       allowedOrigins: ["localhost:3000", "one.greenminds.info"],

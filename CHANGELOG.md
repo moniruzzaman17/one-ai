@@ -2,6 +2,11 @@
 
 All notable changes follow Semantic Versioning.
 
+## 0.1.12 — 2026-09-11
+
+- Enabled Next.js Webpack memory optimizations for the SWC WebAssembly build path used by older shared-hosting systems.
+- Bounded the cPanel build heap and disabled build telemetry to reduce peak resource use under LVE limits.
+
 ## 0.1.11 — 2026-09-11
 
 - Sent every knowledge chunk as a separate Gemini Embedding 2 content object so vector counts match chunk counts.
