@@ -5,7 +5,7 @@ REPO_DIR="/home/greenmin/repositories/one-ai"
 APP_LINK="/home/greenmin/oneai-app"
 RELEASE_ROOT="/home/greenmin/oneai-releases"
 DATA_ROOT="/home/greenmin/oneai-data"
-DOC_ROOT="/home/greenmin/public_html/one.greenminds.info/backend/public"
+DOC_ROOT="${ONEAI_DOCUMENT_ROOT:-}"
 STAMP="$(date +%Y%m%d-%H%M%S)"
 
 cd "$REPO_DIR"
@@ -24,7 +24,7 @@ npm run deploy:prepare
 mkdir -p "$RELEASE_DIR" "$DATA_ROOT/uploads" "$DATA_ROOT/recordings" "$DATA_ROOT/backups"
 cp -a .next/standalone/. "$RELEASE_DIR/"
 
-if [[ -d "$DOC_ROOT" && ! -e "$DATA_ROOT/backups/document-root-$STAMP" ]]; then
+if [[ -n "$DOC_ROOT" && -d "$DOC_ROOT" && ! -e "$DATA_ROOT/backups/document-root-$STAMP" ]]; then
   cp -a "$DOC_ROOT" "$DATA_ROOT/backups/document-root-$STAMP"
 fi
 

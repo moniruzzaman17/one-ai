@@ -36,6 +36,8 @@ Development branches use `codex/*`. A reviewed release is merged to `master`, ta
 
 Required cPanel environment values are documented in `.env.example`. Secrets, uploads, recordings, `.env.local`, and release output are Git-ignored.
 
+The deployment script never guesses the subdomain document root. If an existing document root must be backed up, set `ONEAI_DOCUMENT_ROOT` to the exact absolute path shown by cPanel before running the script; otherwise leave it unset. The Node.js Application Manager owns the `one.greenminds.info` URL mapping.
+
 ## Security notes
 
 - Gemini keys are encrypted with AES-256-GCM and never returned by APIs.

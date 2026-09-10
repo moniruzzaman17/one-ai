@@ -55,3 +55,19 @@ Use search_knowledge_base before answering questions that may depend on assigned
     }],
   };
 }
+
+export function buildRawLiveSetup(model: string, config: LiveConnectConfig) {
+  return {
+    model: `models/${model}`,
+    generationConfig: {
+      responseModalities: config.responseModalities,
+      speechConfig: config.speechConfig,
+    },
+    systemInstruction: config.systemInstruction,
+    tools: config.tools,
+    sessionResumption: config.sessionResumption,
+    inputAudioTranscription: config.inputAudioTranscription,
+    outputAudioTranscription: config.outputAudioTranscription,
+    realtimeInputConfig: config.realtimeInputConfig,
+  };
+}
