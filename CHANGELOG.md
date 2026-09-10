@@ -2,6 +2,10 @@
 
 All notable changes follow Semantic Versioning.
 
+## 0.1.10 — 2026-09-11
+
+- Limited Next.js production type checking to application code so production-only cPanel installs do not require Vitest or Drizzle Kit.
+
 ## 0.1.9 — 2026-09-11
 
 - Forced cPanel production builds to use Webpack so Next.js can build with its SWC WebAssembly fallback on older shared-hosting GLIBC versions.
