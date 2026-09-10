@@ -40,6 +40,8 @@ The deployment script never guesses the subdomain document root. If an existing 
 
 For the confirmed cPanel account layout, keep the private source checkout at `/home/greenmin/repositories/one-ai`, the fixed Node.js application root at `/home/greenmin/oneai-app`, and persistent data at `/home/greenmin/oneai-data`. Run `bash scripts/deploy.sh --prepare` for the first release, create the Node.js 22 Production application with startup file `server.js`, then use `bash scripts/deploy.sh` for later releases and automatic health-check rollback.
 
+On shared hosting that requires the application root inside `public_html`, use `public_html/repositories/one-ai` as the Node.js application root and `server.js` as the startup file. Add secrets through the cPanel application environment interface, run **Run NPM Install**, then run the `cpanel:build` package script and restart the application. Never upload an environment file into the public application root.
+
 ## Security notes
 
 - Gemini keys are encrypted with AES-256-GCM and never returned by APIs.

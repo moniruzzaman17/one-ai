@@ -1,11 +1,11 @@
 {
   "name": "one-ai",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "private": true,
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "node --env-file-if-exists=.env.local .next/standalone/server.js",
+    "start": "node --env-file-if-exists=.env.local server.js",
     "lint": "eslint .",
     "typecheck": "tsc --noEmit",
     "test": "vitest run",
@@ -14,7 +14,8 @@
     "db:migrate": "tsx scripts/migrate.ts",
     "db:seed": "tsx scripts/seed.ts",
     "worker": "node --conditions=react-server --env-file-if-exists=.env.local --import tsx scripts/worker.ts",
-    "deploy:prepare": "tsx scripts/prepare-standalone.ts"
+    "deploy:prepare": "tsx scripts/prepare-standalone.ts",
+    "cpanel:build": "npm run db:migrate && npm run db:seed && npm run build && npm run deploy:prepare"
   },
   "dependencies": {
     "@google/genai": "^2.21.0",

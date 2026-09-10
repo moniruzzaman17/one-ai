@@ -2,6 +2,11 @@
 
 All notable changes follow Semantic Versioning.
 
+## 0.1.3 — 2026-09-11
+
+- Added a repository-root Passenger startup file for cPanel application roots inside `public_html`.
+- Added a cPanel UI build script covering migrations, initial seed, production build and standalone preparation.
+
 ## 0.1.2 — 2026-09-11
 
 - Added a stable cPanel Passenger launcher with an atomic `current` release link.
