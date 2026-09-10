@@ -1,5 +1,5 @@
 export const APP_NAME = "OneAI";
-export const APP_VERSION = process.env.APP_VERSION ?? "0.1.3";
+export const APP_VERSION = process.env.APP_VERSION ?? "0.1.4";
 export const SESSION_COOKIE = "oneai_session";
 export const CSRF_COOKIE = "oneai_csrf";
 export const WIDGET_TOKEN_ISSUER = "oneai-widget";

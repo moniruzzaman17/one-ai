@@ -2,6 +2,10 @@
 
 All notable changes follow Semantic Versioning.
 
+## 0.1.4 — 2026-09-11
+
+- Added a first-install bootstrap HTTP response so cPanel can verify the Passenger application before the production build exists.
+
 ## 0.1.3 — 2026-09-11
 
 - Added a repository-root Passenger startup file for cPanel application roots inside `public_html`.
