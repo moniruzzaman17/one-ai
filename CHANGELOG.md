@@ -2,6 +2,12 @@
 
 All notable changes follow Semantic Versioning.
 
+## 0.1.6 — 2026-09-11
+
+- Added private external environment-file loading for cPanel runtime and build processes.
+- Replaced the cPanel build shell chain with a Node runner that preserves the loaded environment across migrations and build steps.
+- Ignored Passenger-generated runtime files in the source checkout.
+
 ## 0.1.5 — 2026-09-11
 
 - Made the cPanel build script independent of nested `npm` commands in the restricted application runner.

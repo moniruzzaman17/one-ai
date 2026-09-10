@@ -42,6 +42,8 @@ For the confirmed cPanel account layout, keep the private source checkout at `/h
 
 On shared hosting that requires the application root inside `public_html`, use `public_html/repositories/one-ai` as the Node.js application root and `server.js` as the startup file. Add secrets through the cPanel application environment interface, run **Run NPM Install**, then run the `cpanel:build` package script and restart the application. Never upload an environment file into the public application root.
 
+Alternatively, upload the complete environment file to `/home/greenmin/oneai-config/.env` with mode `600` and add only `ONEAI_ENV_FILE=/home/greenmin/oneai-config/.env` in cPanel. Both the startup server and `cpanel:build` load that private file while keeping it outside the document root.
+
 ## Security notes
 
 - Gemini keys are encrypted with AES-256-GCM and never returned by APIs.

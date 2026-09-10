@@ -1,6 +1,6 @@
 {
   "name": "one-ai",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -15,7 +15,7 @@
     "db:seed": "tsx scripts/seed.ts",
     "worker": "node --conditions=react-server --env-file-if-exists=.env.local --import tsx scripts/worker.ts",
     "deploy:prepare": "tsx scripts/prepare-standalone.ts",
-    "cpanel:build": "tsx scripts/migrate.ts && tsx scripts/seed.ts && next build && tsx scripts/prepare-standalone.ts"
+    "cpanel:build": "node scripts/cpanel-build.js"
   },
   "dependencies": {
     "@google/genai": "^2.21.0",

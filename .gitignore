@@ -23,6 +23,9 @@
 /.release
 /public/uploads
 /public/recordings
+/stderr.log
+/tmp/
+/.htaccess
 
 # misc
 .DS_Store

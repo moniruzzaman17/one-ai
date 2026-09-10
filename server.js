@@ -5,6 +5,14 @@ const { existsSync } = require("node:fs");
 const { createServer } = require("node:http");
 const { join } = require("node:path");
 
+const configuredEnvironment = process.env.ONEAI_ENV_FILE;
+if (configuredEnvironment) {
+  if (!existsSync(configuredEnvironment)) {
+    throw new Error(`ONEAI_ENV_FILE does not exist: ${configuredEnvironment}`);
+  }
+  process.loadEnvFile(configuredEnvironment);
+}
+
 const standaloneDirectory = join(__dirname, ".next", "standalone");
 const standaloneServer = join(standaloneDirectory, "server.js");
 
