@@ -31,5 +31,7 @@ function run(modulePath, arguments_) {
 
 run(join(root, "scripts", "migrate.mjs"), []);
 run(join(root, "scripts", "seed.mjs"), []);
-run(require.resolve("next/dist/bin/next"), ["build"]);
+// Older shared-hosting GLIBC releases cannot load Next.js native SWC. Next.js
+// falls back to SWC WASM there, which is supported by Webpack but not Turbopack.
+run(require.resolve("next/dist/bin/next"), ["build", "--webpack"]);
 run(join(root, "scripts", "prepare-standalone.mjs"), []);

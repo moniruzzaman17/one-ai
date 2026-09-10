@@ -2,6 +2,10 @@
 
 All notable changes follow Semantic Versioning.
 
+## 0.1.9 — 2026-09-11
+
+- Forced cPanel production builds to use Webpack so Next.js can build with its SWC WebAssembly fallback on older shared-hosting GLIBC versions.
+
 ## 0.1.8 — 2026-09-11
 
 - Switched production database migrations and seeding from PostgreSQL TCP to Neon HTTPS for shared hosts that block outbound port 5432.
