@@ -2,6 +2,11 @@
 
 All notable changes follow Semantic Versioning.
 
+## 0.1.8 — 2026-09-11
+
+- Switched production database migrations and seeding from PostgreSQL TCP to Neon HTTPS for shared hosts that block outbound port 5432.
+- Switched the application database runtime to Neon WebSockets over port 443 while preserving interactive transaction support.
+
 ## 0.1.7 — 2026-09-11
 
 - Removed `tsx` and its WebAssembly parser from every cPanel build step to stay within shared-hosting LVE memory limits.

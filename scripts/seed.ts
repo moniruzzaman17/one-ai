@@ -1,7 +1,7 @@
 import bcrypt from "bcryptjs";
 import { config } from "dotenv";
-import postgres from "postgres";
-import { drizzle } from "drizzle-orm/postgres-js";
+import { neon } from "@neondatabase/serverless";
+import { drizzle } from "drizzle-orm/neon-http";
 import { sql } from "drizzle-orm";
 import { admins, schemaVersion, settings } from "../src/db/schema";
 
@@ -18,8 +18,8 @@ if (!email || !password || password.length < 12) {
 const adminEmail = email;
 const adminPassword = password;
 
-async function main(){const client = postgres(url!, { max: 1, prepare: false });
-const database = drizzle(client);try {
+async function main(){const client = neon(url!);
+const database = drizzle({ client });
   const [{ count }] = await database.select({ count: sql<number>`count(*)::int` }).from(admins);
   if (count === 0) {
     await database.insert(admins).values({
@@ -33,6 +33,5 @@ const database = drizzle(client);try {
     console.log("Administrator already exists; seed left it unchanged");
   }
   await database.insert(schemaVersion).values({ id: 1, version: process.env.APP_VERSION ?? "0.1.0" }).onConflictDoUpdate({ target: schemaVersion.id, set: { version: process.env.APP_VERSION ?? "0.1.0", updatedAt: new Date() } });
-  await database.insert(settings).values({ key: "cost", value: { usdBdt: 122, textInputPerMillionUsd: 0.5, textOutputPerMillionUsd: 2, audioInputPerMillionUsd: 3, audioOutputPerMillionUsd: 12 } }).onConflictDoNothing();
-} finally { await client.end(); }}
+  await database.insert(settings).values({ key: "cost", value: { usdBdt: 122, textInputPerMillionUsd: 0.5, textOutputPerMillionUsd: 2, audioInputPerMillionUsd: 3, audioOutputPerMillionUsd: 12 } }).onConflictDoNothing();}
 main().catch((error)=>{console.error(error);process.exit(1)});

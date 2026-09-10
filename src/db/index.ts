@@ -1,9 +1,12 @@
 import "server-only";
-import postgres from "postgres";
-import { drizzle } from "drizzle-orm/postgres-js";
+import { Pool, neonConfig } from "@neondatabase/serverless";
+import { drizzle } from "drizzle-orm/neon-serverless";
+import ws from "ws";
 import * as schema from "./schema";
 
-const globalForDb = globalThis as unknown as { oneAiSql?: ReturnType<typeof postgres> };
+neonConfig.webSocketConstructor = ws;
+
+const globalForDb = globalThis as unknown as { oneAiPool?: Pool };
 
 function connectionString() {
   const value = process.env.DATABASE_URL;
@@ -11,15 +14,15 @@ function connectionString() {
   return value;
 }
 
-export const sqlClient =
-  globalForDb.oneAiSql ??
-  postgres(connectionString(), {
+export const dbPool =
+  globalForDb.oneAiPool ??
+  new Pool({
+    connectionString: connectionString(),
     max: process.env.NODE_ENV === "production" ? 5 : 2,
-    idle_timeout: 20,
-    connect_timeout: 15,
-    prepare: false,
+    idleTimeoutMillis: 20_000,
+    connectionTimeoutMillis: 15_000,
   });
 
-if (process.env.NODE_ENV !== "production") globalForDb.oneAiSql = sqlClient;
+if (process.env.NODE_ENV !== "production") globalForDb.oneAiPool = dbPool;
 
-export const db = drizzle(sqlClient, { schema });
+export const db = drizzle({ client: dbPool, schema });

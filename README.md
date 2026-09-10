@@ -44,6 +44,8 @@ On shared hosting that requires the application root inside `public_html`, use `
 
 Alternatively, upload the complete environment file to `/home/greenmin/oneai-config/.env` with mode `600` and add only `ONEAI_ENV_FILE=/home/greenmin/oneai-config/.env` in cPanel. Both the startup server and `cpanel:build` load that private file while keeping it outside the document root.
 
+The application uses Neon HTTPS for migrations and seeding and Neon WebSockets for runtime database sessions. Both travel over port 443, so direct outbound PostgreSQL access on port 5432 is not required from shared hosting.
+
 ## Security notes
 
 - Gemini keys are encrypted with AES-256-GCM and never returned by APIs.
