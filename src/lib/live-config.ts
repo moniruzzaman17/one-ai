@@ -1,0 +1,57 @@
+import { Modality, Type, type LiveConnectConfig } from "@google/genai";
+import type { agentLeadFields, agents } from "@/db/schema";
+
+type Agent = typeof agents.$inferSelect;
+type Field = typeof agentLeadFields.$inferSelect;
+
+export function buildLiveConfig(agent: Agent, fields: Field[]): LiveConnectConfig {
+  const language = agent.language === "bangla"
+    ? "Speak naturally in Bangla."
+    : agent.language === "english"
+      ? "Speak in English."
+      : "Speak in Bangla or English, matching the visitor's language.";
+  const leadList = fields
+    .map((field) => `${field.fieldKey}: ${field.label}${field.required ? " (required)" : ""}`)
+    .join(", ");
+  const prompt = `You are ${agent.name}, a browser voice assistant. ${language} Tone: ${agent.tone}. ${agent.systemPrompt}
+Begin the conversation with this exact greeting: ${agent.greeting}
+Use search_knowledge_base before answering questions that may depend on assigned business knowledge. Never invent facts when retrieval has no answer. Collect these lead fields conversationally when appropriate: ${leadList}. Save each value with save_lead_information.`;
+
+  return {
+    responseModalities: [Modality.AUDIO],
+    speechConfig: { voiceConfig: { prebuiltVoiceConfig: { voiceName: agent.voiceName } } },
+    systemInstruction: { parts: [{ text: prompt }] },
+    inputAudioTranscription: {},
+    outputAudioTranscription: {},
+    sessionResumption: {},
+    realtimeInputConfig: {
+      automaticActivityDetection: {
+        disabled: false,
+        prefixPaddingMs: 200,
+        silenceDurationMs: 700,
+      },
+    },
+    tools: [{
+      functionDeclarations: [{
+        name: "search_knowledge_base",
+        description: "Search only the knowledge assigned to this agent.",
+        parameters: {
+          type: Type.OBJECT,
+          properties: { query: { type: Type.STRING } },
+          required: ["query"],
+        },
+      }, {
+        name: "save_lead_information",
+        description: "Save a visitor detail after the visitor provides it.",
+        parameters: {
+          type: Type.OBJECT,
+          properties: {
+            fieldKey: { type: Type.STRING },
+            value: { type: Type.STRING },
+          },
+          required: ["fieldKey", "value"],
+        },
+      }],
+    }],
+  };
+}

@@ -1,0 +1,2 @@
+import { describe,expect,it } from "vitest";import { assertPublicUrl } from "@/lib/knowledge/network";
+describe("crawler network safety",()=>{it("rejects localhost and loopback",async()=>{await expect(assertPublicUrl("http://127.0.0.1/private")).rejects.toThrow(/Private|local/)});it("rejects non-http protocols",async()=>{await expect(assertPublicUrl("file:///etc/passwd")).rejects.toThrow(/HTTP/)});it("rejects embedded credentials",async()=>{await expect(assertPublicUrl("https://user:pass@example.com")).rejects.toThrow(/HTTP/)})});

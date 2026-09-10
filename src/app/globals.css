@@ -1,26 +1,22 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
-}
+:root { --ink:#0d1731; --muted:#64718f; --primary:#3858f0; --primary-deep:#2741c9; --accent:#16d9c4; --surface:rgba(255,255,255,.62); --surface-strong:rgba(255,255,255,.82); --border:rgba(255,255,255,.72); --shadow:0 24px 80px rgba(27,52,113,.16); --danger:#e5485c; }
+* { box-sizing:border-box; }
+html { background:#eef5ff; }
+body { min-height:100vh; margin:0; color:var(--ink); font-family:var(--font-inter),system-ui,sans-serif; background:radial-gradient(circle at 12% 8%,rgba(56,88,240,.23),transparent 34rem),radial-gradient(circle at 90% 78%,rgba(22,217,196,.22),transparent 30rem),linear-gradient(145deg,#edf3ff 0%,#f5fbff 47%,#e9faf7 100%); background-attachment:fixed; }
+button,input,textarea,select { font:inherit; } button { cursor:pointer; } a { color:inherit; text-decoration:none; }
+.glass { background:var(--surface); border:1px solid var(--border); box-shadow:var(--shadow),inset 0 1px 0 rgba(255,255,255,.76); backdrop-filter:blur(24px) saturate(145%); -webkit-backdrop-filter:blur(24px) saturate(145%); }
+.glass-strong { background:var(--surface-strong); border:1px solid rgba(255,255,255,.84); box-shadow:0 14px 45px rgba(38,68,130,.14),inset 0 1px 0 #fff; backdrop-filter:blur(20px) saturate(150%); -webkit-backdrop-filter:blur(20px) saturate(150%); }
+.brand-mark { display:grid; place-items:center; width:42px; height:42px; border-radius:15px; color:white; font:800 18px/1 var(--font-manrope),sans-serif; background:linear-gradient(145deg,var(--primary),var(--accent)); box-shadow:0 10px 25px rgba(56,88,240,.25),inset 0 1px 1px rgba(255,255,255,.5); }
+.heading { font-family:var(--font-manrope),sans-serif; letter-spacing:-.035em; }
+.field { display:grid; gap:7px; }.field>span { font-size:13px; font-weight:700; color:#35415f; }
+.input { width:100%; border:1px solid rgba(73,95,151,.18); border-radius:13px; padding:11px 13px; color:var(--ink); outline:0; background:rgba(255,255,255,.69); box-shadow:inset 0 1px 2px rgba(29,48,93,.04); transition:.2s ease; }
+.input:focus { border-color:rgba(56,88,240,.62); box-shadow:0 0 0 4px rgba(56,88,240,.1); }
+.btn { display:inline-flex; align-items:center; justify-content:center; gap:8px; min-height:42px; border:0; border-radius:13px; padding:9px 16px; font-weight:800; transition:transform .15s,box-shadow .2s,background .2s; }.btn:hover{transform:translateY(-1px)}
+.btn-primary{color:#fff;background:linear-gradient(135deg,var(--primary),#5575ff);box-shadow:0 10px 25px rgba(56,88,240,.22)}.btn-secondary{color:#273555;background:rgba(255,255,255,.68);border:1px solid rgba(72,94,145,.14)}.btn-danger{color:#fff;background:var(--danger)}
+.page-title{font:800 clamp(25px,3vw,34px)/1.15 var(--font-manrope),sans-serif;letter-spacing:-.04em}.page-subtitle{color:var(--muted);margin-top:7px;font-size:14px}.page-grid{display:grid;gap:18px}.card{border-radius:22px;padding:20px}
+.table-wrap{overflow-x:auto}.table{width:100%;border-collapse:collapse;font-size:14px}.table th{text-align:left;color:#64718f;font-size:12px;text-transform:uppercase;letter-spacing:.06em;padding:12px}.table td{padding:14px 12px;border-top:1px solid rgba(70,90,140,.1)}
+.badge{display:inline-flex;padding:5px 9px;border-radius:999px;font-size:11px;font-weight:800;background:rgba(56,88,240,.1);color:#2d49d1}.badge-hot{color:#b42335;background:#ffe4e7}.badge-warm{color:#a14f03;background:#fff0d6}.badge-cold{color:#2655b6;background:#e4edff}.badge-unqualified{color:#5f6775;background:#eceff4}
+.empty{padding:44px 20px;text-align:center;color:var(--muted)}.error{color:#bc3143;background:rgba(255,231,235,.85);border:1px solid rgba(220,55,80,.18);padding:10px 12px;border-radius:12px;font-size:13px}.success{color:#087868;background:rgba(220,255,249,.85);border:1px solid rgba(17,174,151,.18);padding:10px 12px;border-radius:12px;font-size:13px}
+@supports not ((backdrop-filter:blur(2px))){.glass,.glass-strong{background:rgba(249,252,255,.96)}}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important}}

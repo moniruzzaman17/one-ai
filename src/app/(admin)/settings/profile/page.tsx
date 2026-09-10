@@ -1,0 +1,1 @@
+import ProfileClient from "./profile-client";import { requireAdmin } from "@/lib/auth";export default async function ProfilePage(){const admin=await requireAdmin();return <ProfileClient name={admin.name} email={admin.email} mustChange={admin.mustChangePassword}/>}

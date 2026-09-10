@@ -1,0 +1,2 @@
+import { describe,expect,it } from "vitest";import { calculateCost } from "@/lib/cost";
+describe("call cost",()=>{it("calculates modality pricing and BDT snapshot",()=>{const result=calculateCost({textInputTokens:1_000_000,textOutputTokens:500_000,audioInputTokens:2_000_000,audioOutputTokens:250_000},{usdBdt:120,textInputPerMillionUsd:.5,textOutputPerMillionUsd:2,audioInputPerMillionUsd:3,audioOutputPerMillionUsd:12});expect(result.usd).toBe(10.5);expect(result.bdt).toBe(1260)});it("handles missing usage",()=>expect(calculateCost({}).bdt).toBe(0))});

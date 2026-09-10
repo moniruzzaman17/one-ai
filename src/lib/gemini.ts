@@ -1,0 +1,4 @@
+import "server-only";import { GoogleGenAI } from "@google/genai";import { GEMINI_EMBEDDING_MODEL } from "./constants";import { getGeminiKey } from "./settings";
+export async function geminiClient(){const key=await getGeminiKey();if(!key)throw new Error("Gemini API key is not configured");return new GoogleGenAI({apiKey:key})}
+export async function embedTexts(texts:string[]){const ai=await geminiClient();const result=await ai.models.embedContent({model:GEMINI_EMBEDDING_MODEL,contents:texts,config:{outputDimensionality:768,taskType:"RETRIEVAL_DOCUMENT"}});return (result.embeddings??[]).map(e=>e.values??[])}
+export async function embedQuery(text:string){const ai=await geminiClient();const result=await ai.models.embedContent({model:GEMINI_EMBEDDING_MODEL,contents:text,config:{outputDimensionality:768,taskType:"RETRIEVAL_QUERY"}});const vector=result.embeddings?.[0]?.values;if(!vector?.length)throw new Error("Embedding provider returned no vector");return vector}

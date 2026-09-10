@@ -1,0 +1,2 @@
+import { processNextJob } from "@/lib/knowledge/worker";import { safeEqual } from "@/lib/crypto";import { jsonError } from "@/lib/request-security";
+export async function POST(request:Request){const expected=process.env.CRON_SECRET;const supplied=request.headers.get("authorization")?.replace(/^Bearer\s+/i,"")??"";if(!expected||!safeEqual(expected,supplied))return jsonError("Unauthorized",401);const results=[];for(let i=0;i<3;i++){const result=await processNextJob();if(!result)break;results.push(result)}return Response.json({ok:true,processed:results})}

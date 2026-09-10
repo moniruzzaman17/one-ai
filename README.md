@@ -1,36 +1,45 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# OneAI
 
-## Getting Started
+OneAI is a lightweight, independent voice-only browser agent platform. It uses Next.js 16, TypeScript, Tailwind CSS, Drizzle ORM, Neon PostgreSQL/pgvector, and Gemini Live.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+- One secure administrator with forced first-login password change.
+- Multiple English, Bangla, and bilingual voice agents.
+- PDF/DOCX/XLSX/TXT/CSV and safe same-origin website ingestion.
+- Agent-scoped 768-dimensional vector retrieval through `search_knowledge_base`.
+- Shadow DOM floating widget with Gemini ephemeral tokens, microphone streaming, barge-in, mute, transcript, explicit recording consent, and mixed WebM recording.
+- Call history, lead fields, AI category, manual override, BDT cost snapshots, CSV/XLSX export, and dashboard.
+
+## Local setup
+
+1. Copy `.env.example` to `.env.local` and set Neon plus generated secrets.
+2. Run `npm ci`, `npm run db:migrate`, and `npm run db:seed`.
+3. Start with `npm run dev` and open `http://localhost:3000`.
+4. Serve `test-fixture` from a second local origin and add that exact origin to the widget allowlist.
+
+XAMPP only owns the project folder and can serve the optional fixture. PHP/Apache does not run the Next.js application.
+
+## Background jobs
+
+Local: `npm run worker`. Production cPanel cron (every minute):
+
+```sh
+curl --fail --silent --show-error -X POST -H "Authorization: Bearer <CRON_SECRET>" https://one.greenminds.info/api/jobs/run >/dev/null
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The same worker handles ingestion retries, call summaries, and 90-day recording cleanup.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Release and deployment
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Development branches use `codex/*`. A reviewed release is merged to `master`, tagged with `vX.Y.Z`, then pulled in cPanel. `scripts/deploy.sh` runs install, typecheck, tests, migrations, seed, build, standalone preparation, atomic release switch, health check, and rollback.
 
-## Learn More
+Required cPanel environment values are documented in `.env.example`. Secrets, uploads, recordings, `.env.local`, and release output are Git-ignored.
 
-To learn more about Next.js, take a look at the following resources:
+## Security notes
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Gemini keys are encrypted with AES-256-GCM and never returned by APIs.
+- Admin mutations require same-origin plus CSRF validation.
+- Widget sessions enforce exact origin allowlists, short-lived signed tokens, rate limits, one active call, and Gemini model/config-bound ephemeral tokens.
+- Crawler requests block private/local networks, limit redirects, pages, depth, response size, and respect `robots.txt`.
+- Rotate any credential ever shared in chat after setup and live verification.
