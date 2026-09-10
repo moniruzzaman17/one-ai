@@ -1,6 +1,6 @@
 import "server-only";
 import { unlink } from "node:fs/promises";
-import { and,asc,eq,lt,or,sql } from "drizzle-orm";
+import { and,asc,eq,lt,lte,or,sql } from "drizzle-orm";
 import { db } from "@/db";
 import { calls,ingestionJobs,knowledgeChunks,knowledgeSources,workerHeartbeats } from "@/db/schema";
 import { embedTexts } from "@/lib/gemini";
@@ -10,9 +10,12 @@ import { crawlWebsite } from "./crawler";
 import { parseDocument } from "./parser";
 
 export async function processNextJob(){
-  const [job]=await db.select().from(ingestionJobs).where(and(sql`${ingestionJobs.attempts}<5`,or(eq(ingestionJobs.status,"queued"),and(eq(ingestionJobs.status,"processing"),lt(ingestionJobs.lockedAt,new Date(Date.now()-10*60_000)))))).orderBy(asc(ingestionJobs.availableAt)).limit(1);
+  const now=new Date();
+  const staleBefore=new Date(now.getTime()-10*60_000);
+  const eligible=and(sql`${ingestionJobs.attempts}<5`,lte(ingestionJobs.availableAt,now),or(eq(ingestionJobs.status,"queued"),and(eq(ingestionJobs.status,"processing"),lt(ingestionJobs.lockedAt,staleBefore))));
+  const [job]=await db.select().from(ingestionJobs).where(eligible).orderBy(asc(ingestionJobs.availableAt)).limit(1);
   if(!job){await cleanupExpiredRecordings();await heartbeat("idle");return null}
-  const claimed=await db.update(ingestionJobs).set({status:"processing",lockedAt:new Date(),attempts:job.attempts+1,updatedAt:new Date()}).where(and(eq(ingestionJobs.id,job.id),or(eq(ingestionJobs.status,"queued"),eq(ingestionJobs.status,"processing")))).returning();
+  const claimed=await db.update(ingestionJobs).set({status:"processing",lockedAt:now,attempts:job.attempts+1,updatedAt:now}).where(and(eq(ingestionJobs.id,job.id),eligible)).returning();
   if(!claimed.length)return null;
   try{
     if(job.type==="summarize"){

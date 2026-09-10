@@ -2,6 +2,11 @@
 
 All notable changes follow Semantic Versioning.
 
+## 0.1.11 — 2026-09-11
+
+- Sent every knowledge chunk as a separate Gemini Embedding 2 content object so vector counts match chunk counts.
+- Enforced retry availability and atomic job claiming to prevent the same failed job from being retried repeatedly in one cron request.
+
 ## 0.1.10 — 2026-09-11
 
 - Limited Next.js production type checking to application code so production-only cPanel installs do not require Vitest or Drizzle Kit.
