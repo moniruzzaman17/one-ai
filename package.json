@@ -1,6 +1,6 @@
 {
   "name": "one-ai",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -15,10 +15,14 @@
     "db:seed": "tsx scripts/seed.ts",
     "worker": "node --conditions=react-server --env-file-if-exists=.env.local --import tsx scripts/worker.ts",
     "deploy:prepare": "tsx scripts/prepare-standalone.ts",
-    "cpanel:build": "npm run db:migrate && npm run db:seed && npm run build && npm run deploy:prepare"
+    "cpanel:build": "tsx scripts/migrate.ts && tsx scripts/seed.ts && next build && tsx scripts/prepare-standalone.ts"
   },
   "dependencies": {
     "@google/genai": "^2.21.0",
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^22.20.2",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
     "bcryptjs": "^3.0.3",
     "cheerio": "^1.2.0",
     "clsx": "^2.1.1",
@@ -38,22 +42,18 @@
     "react-dom": "19.2.8",
     "robots-parser": "^3.0.1",
     "server-only": "^0.0.1",
+    "tailwindcss": "^4",
     "tailwind-merge": "^3.6.0",
+    "tsx": "^4.23.13",
+    "typescript": "^5",
     "zod": "^4.6.0"
   },
   "devDependencies": {
     "@playwright/test": "^1.63.0",
-    "@tailwindcss/postcss": "^4",
-    "@types/node": "^22.20.2",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
     "@vitest/coverage-v8": "^5.0.0",
     "drizzle-kit": "^0.31.10",
     "eslint": "^9",
     "eslint-config-next": "16.3.4",
-    "tailwindcss": "^4",
-    "tsx": "^4.23.13",
-    "typescript": "^5",
     "vitest": "^5.0.0"
   }
 }

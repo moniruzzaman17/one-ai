@@ -2,6 +2,11 @@
 
 All notable changes follow Semantic Versioning.
 
+## 0.1.5 — 2026-09-11
+
+- Made the cPanel build script independent of nested `npm` commands in the restricted application runner.
+- Promoted the required production-build toolchain so cPanel Production installs retain the executables needed to build.
+
 ## 0.1.4 — 2026-09-11
 
 - Added a first-install bootstrap HTTP response so cPanel can verify the Passenger application before the production build exists.
