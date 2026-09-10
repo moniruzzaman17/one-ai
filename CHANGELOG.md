@@ -2,6 +2,11 @@
 
 All notable changes follow Semantic Versioning.
 
+## 0.1.7 — 2026-09-11
+
+- Removed `tsx` and its WebAssembly parser from every cPanel build step to stay within shared-hosting LVE memory limits.
+- Added plain Node migration, seed and standalone-preparation scripts for production deployment.
+
 ## 0.1.6 — 2026-09-11
 
 - Added private external environment-file loading for cPanel runtime and build processes.

@@ -29,8 +29,7 @@ function run(modulePath, arguments_) {
   if (result.status !== 0) process.exit(result.status ?? 1);
 }
 
-const tsx = require.resolve("tsx/cli");
-run(tsx, ["scripts/migrate.ts"]);
-run(tsx, ["scripts/seed.ts"]);
+run(join(root, "scripts", "migrate.mjs"), []);
+run(join(root, "scripts", "seed.mjs"), []);
 run(require.resolve("next/dist/bin/next"), ["build"]);
-run(tsx, ["scripts/prepare-standalone.ts"]);
+run(join(root, "scripts", "prepare-standalone.mjs"), []);
