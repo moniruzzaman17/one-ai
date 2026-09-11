@@ -2,6 +2,15 @@
 
 All notable changes follow Semantic Versioning.
 
+## 0.1.15 — 2026-09-11
+
+- Consolidated incremental Gemini transcription chunks into one UI bubble and one stored row per conversational turn.
+- Waited for queued transcript writes before ending calls so summaries cannot race ahead of the transcript.
+- Updated call summarization to the supported Gemini 3.6 Flash model and merged existing fragmented transcripts before summarizing.
+- Discovered same-origin catalog APIs used by JavaScript storefronts and indexed paginated JSON product data.
+- Added crawl inspection with indexed URLs, chunk counts and content previews in the Knowledge Base screen.
+- Made product, price, stock, specification and policy questions require an assigned knowledge-base lookup.
+
 ## 0.1.14 — 2026-09-11
 
 - Decoded Gemini Live browser WebSocket responses from string, Blob, ArrayBuffer and typed-array payloads.

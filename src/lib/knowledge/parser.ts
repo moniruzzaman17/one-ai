@@ -5,6 +5,7 @@ import mammoth from "mammoth";
 import ExcelJS from "exceljs";
 import { PDFParse } from "pdf-parse";
 import { GoogleGenAI } from "@google/genai";
+import { GEMINI_SUMMARY_MODEL } from "@/lib/constants";
 import { getGeminiKey } from "@/lib/settings";
 
 async function ocrPdf(data: Buffer) {
@@ -12,7 +13,7 @@ async function ocrPdf(data: Buffer) {
   if (!key) throw new Error("This PDF appears scanned. Configure Gemini first to enable OCR.");
   const ai = new GoogleGenAI({ apiKey: key });
   const result = await ai.models.generateContent({
-    model: process.env.GEMINI_SUMMARY_MODEL ?? "gemini-2.5-flash",
+    model: GEMINI_SUMMARY_MODEL,
     contents: [
       { inlineData: { mimeType: "application/pdf", data: data.toString("base64") } },
       { text: "Extract all readable text from this document faithfully. Preserve headings and table rows. Return text only." },

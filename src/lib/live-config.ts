@@ -15,7 +15,7 @@ export function buildLiveConfig(agent: Agent, fields: Field[]): LiveConnectConfi
     .join(", ");
   const prompt = `You are ${agent.name}, a browser voice assistant. ${language} Tone: ${agent.tone}. ${agent.systemPrompt}
 Begin the conversation with this exact greeting: ${agent.greeting}
-Use search_knowledge_base before answering questions that may depend on assigned business knowledge. Never invent facts when retrieval has no answer. Collect these lead fields conversationally when appropriate: ${leadList}. Save each value with save_lead_information.`;
+For every question about products, catalog, price, stock, specifications, company information or policies, you MUST call search_knowledge_base before answering. Base the answer on its answerContext and never invent facts when retrieval has no answer. Collect these lead fields conversationally when appropriate: ${leadList}. Save each value with save_lead_information.`;
 
   return {
     responseModalities: [Modality.AUDIO],
@@ -34,7 +34,7 @@ Use search_knowledge_base before answering questions that may depend on assigned
     tools: [{
       functionDeclarations: [{
         name: "search_knowledge_base",
-        description: "Search only the knowledge assigned to this agent.",
+        description: "Mandatory lookup for products, prices, stock, specifications, company details and policies. Searches only knowledge assigned to this agent.",
         parameters: {
           type: Type.OBJECT,
           properties: { query: { type: Type.STRING } },

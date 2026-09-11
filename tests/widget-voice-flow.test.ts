@@ -112,7 +112,7 @@ describe("public widget Gemini Live flow", () => {
     };
     Object.assign(context,{window:context});
     vm.runInNewContext(readFileSync("public/widget/embed.js","utf8"),context);
-    for (let index=0;index<5;index++) await Promise.resolve();
+    for (let index=0;index<20;index++) await Promise.resolve();
 
     await elements.get(".call")!.onclick!();
     expect(sockets).toHaveLength(1);
@@ -133,9 +133,16 @@ describe("public widget Gemini Live flow", () => {
     processors[0].onaudioprocess!(audioEvent);
     expect(socket.sent).toHaveLength(2);
 
+    socket.onmessage!({data:new TextEncoder().encode(JSON.stringify({serverContent:{outputTranscription:{text:"How"}}})).buffer});
+    socket.onmessage!({data:new TextEncoder().encode(JSON.stringify({serverContent:{outputTranscription:{text:"can I help?"}}})).buffer});
     socket.onmessage!({data:new TextEncoder().encode(JSON.stringify({serverContent:{turnComplete:true}})).buffer});
-    for (let index=0;index<5;index++) await Promise.resolve();
+    for (let index=0;index<20;index++) await Promise.resolve();
     processors[0].onaudioprocess!(audioEvent);
     expect(JSON.parse(socket.sent[2])).toHaveProperty("realtimeInput.audio.mimeType","audio/pcm;rate=16000");
+    const turnEvents=fetchMock.mock.calls
+      .filter(([url])=>String(url).includes("/calls/event"))
+      .map(([,options])=>JSON.parse(String((options as RequestInit).body)))
+      .filter(event=>event.type==="turn");
+    expect(turnEvents).toEqual([{type:"turn",role:"agent",text:"How can I help?",sequence:0}]);
   });
 });
