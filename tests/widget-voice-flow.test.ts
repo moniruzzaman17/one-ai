@@ -41,7 +41,7 @@ describe("public widget Gemini Live flow", () => {
       readyState = 0;
       sent: string[] = [];
       onopen: (()=>void) | null = null;
-      onmessage: ((event:{data:string})=>void) | null = null;
+      onmessage: ((event:{data:unknown})=>void) | null = null;
       onerror: (()=>void) | null = null;
       onclose: ((event:{code:number;reason:string})=>void) | null = null;
       constructor(public url:string) { sockets.push(this); }
@@ -89,6 +89,7 @@ describe("public widget Gemini Live flow", () => {
     const mediaStream = {getTracks:()=>[{stop() {}}]};
     const context = {
       AudioContext: FakeAudioContext,
+      ArrayBuffer,
       Blob,
       Buffer,
       MediaRecorder: FakeRecorder,
@@ -107,6 +108,7 @@ describe("public widget Gemini Live flow", () => {
       navigator: {mediaDevices:{getUserMedia:async()=>mediaStream}},
       setInterval,
       setTimeout,
+      TextDecoder,
     };
     Object.assign(context,{window:context});
     vm.runInNewContext(readFileSync("public/widget/embed.js","utf8"),context);
@@ -124,13 +126,15 @@ describe("public widget Gemini Live flow", () => {
     expect(socket.sent).toHaveLength(1);
     expect(recorders[0].start).not.toHaveBeenCalled();
 
-    socket.onmessage!({data:JSON.stringify({setupComplete:{}})});
+    socket.onmessage!({data:new Blob([JSON.stringify({setupComplete:{}})],{type:"application/json"})});
+    for (let index=0;index<5;index++) await Promise.resolve();
     expect(recorders[0].start).toHaveBeenCalledWith(4000);
     expect(JSON.parse(socket.sent[1])).toEqual({realtimeInput:{text:"Begin the call now with the exact configured greeting, speaking aloud."}});
     processors[0].onaudioprocess!(audioEvent);
     expect(socket.sent).toHaveLength(2);
 
-    socket.onmessage!({data:JSON.stringify({serverContent:{turnComplete:true}})});
+    socket.onmessage!({data:new TextEncoder().encode(JSON.stringify({serverContent:{turnComplete:true}})).buffer});
+    for (let index=0;index<5;index++) await Promise.resolve();
     processors[0].onaudioprocess!(audioEvent);
     expect(JSON.parse(socket.sent[2])).toHaveProperty("realtimeInput.audio.mimeType","audio/pcm;rate=16000");
   });

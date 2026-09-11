@@ -2,6 +2,12 @@
 
 All notable changes follow Semantic Versioning.
 
+## 0.1.14 — 2026-09-11
+
+- Decoded Gemini Live browser WebSocket responses from string, Blob, ArrayBuffer and typed-array payloads.
+- Serialized asynchronous voice-message decoding to preserve the Gemini response order.
+- Added browser-widget regression coverage for Blob and binary Gemini messages.
+
 ## 0.1.13 — 2026-09-11
 
 - Enforced the Gemini Live handshake order so microphone audio cannot be sent before `setupComplete`.
