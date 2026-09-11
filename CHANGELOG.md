@@ -2,6 +2,14 @@
 
 All notable changes follow Semantic Versioning.
 
+## 0.1.13 — 2026-09-11
+
+- Enforced the Gemini Live handshake order so microphone audio cannot be sent before `setupComplete`.
+- Let the agent speak its configured greeting before enabling visitor audio, preventing immediate VAD/barge-in cancellation.
+- Started call recording only after Gemini confirms the live session.
+- Added handshake timeout, WebSocket close-code diagnostics, reliable media cleanup and visible connection errors.
+- Forced the public embed script to revalidate so deployed widget fixes are not hidden by a stale browser cache.
+
 ## 0.1.12 — 2026-09-11
 
 - Enabled Next.js Webpack memory optimizations for the SWC WebAssembly build path used by older shared-hosting systems.
